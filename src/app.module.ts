@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+
 
 import { UserModule } from './user/user.module';
 
 @Module({
-  // imports: [MongooseModule.forRoot(process.env.DB_URI), UserModule],
-  imports: [UserModule],
+  imports: [
+    ConfigModule.forRoot(), 
+    MongooseModule.forRoot(process.env.DB_URI),
+    UserModule
+  ],
 })
-export class AppModule {}
+export class AppModule { }

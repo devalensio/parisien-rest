@@ -1,24 +1,30 @@
 import { Injectable, HttpException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 
-import './user.dto';
+import { Model } from 'mongoose';
+
 import { UserDto } from './user.dto';
+
+import { IUser } from './interfaces/user.interface';
 
 @Injectable()
 export class UserService {
+  constructor(@InjectModel('User') private readonly userModel: Model<IUser>) { }
+
   public async findAll() {
-    /**
-     * Test using dummy data
-     */
-    return [
-      {
-        id: '123123',
-        name: 'Valensio Deva Prasetyo',
-      },
-    ];
+    const users = await this.userModel.find().exec();
+
+    if (!users || !users.length) {
+      throw new HttpException('Not Found', 404);
+    }
+
+    return users;
   }
 
-  async createUser(user: UserDto) {
+  async createUser(newUser: UserDto): Promise<IUser> {
+    const user = new this.userModel(newUser);
 
+    return user.save();
   }
 
   public async find(id: Number) {

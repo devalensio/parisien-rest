@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 
-// service
+import * as bcrypt from 'bcrypt';
+
 import { UserService } from './user.service';
 
-// dto
 import { UserDto } from './user.dto';
 
 @Controller('users')
@@ -32,13 +32,23 @@ export class UserController {
   }
 
   @Put(':id')
-  async editUser(@Param('id') id: number) {
+  async editUser(@Param('id') id: number, @Query() query) {
     const user = this.userService.find(id);
   }
 
-  @Post()
+  @Post('/register')
   async registerUser(@Body() userBody: UserDto) {
-    const user = this.userService.createUser(userBody);
+    const saltOrRounds = 10;
+    const hashPassword = await bcrypt.hash(userBody.password, saltOrRounds);
+
+    const newUser: UserDto = {
+      name: userBody.name,
+      email: userBody.email,
+      password: hashPassword,
+      phoneNumber: userBody.phoneNumber,
+    };
+
+    return this.userService.createUser(newUser);
   }
 
   @Post()

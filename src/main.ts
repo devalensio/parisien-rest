@@ -9,8 +9,6 @@ async function bootstrap() {
     logger: console,
   });
 
-  console.log(process.env, 'test');
-
   app.use(helmet());
   app.enableCors();
   app.setGlobalPrefix('v1');

@@ -4,7 +4,8 @@ import * as bcrypt from 'bcrypt';
 
 import { UserService } from './user.service';
 
-import { UserDto } from './user.dto';
+import { UserDto } from './dto/user.dto';
+import { UserLoginDto } from './dto/user-login.dto';
 
 @Controller('users')
 export class UserController {
@@ -15,26 +16,17 @@ export class UserController {
   @Get()
   async getUsers() {
     const users = await this.userService.findAll();
-
     return users;
   }
 
   @Get(':id')
-  async getUserById(@Param('id') id: number) {
-    const user = this.userService.find(id);
-
-    return user;
-  }
+  async getUserById(@Param('id') id: number) { }
 
   @Delete(':id')
-  async deleteUser(@Param('id') id: number) {
-    const user = this.userService.find(id);
-  }
+  async deleteUser(@Param('id') id: number) { }
 
   @Put(':id')
-  async editUser(@Param('id') id: number, @Query() query) {
-    const user = this.userService.find(id);
-  }
+  async editUser(@Param('id') id: number, @Query() query) { }
 
   @Post('/register')
   async registerUser(@Body() userBody: UserDto) {
@@ -51,13 +43,6 @@ export class UserController {
     return this.userService.createUser(newUser);
   }
 
-  @Post()
-  async loginUser() {
-
-  }
-
   @Get()
-  async getUserCount() {
-
-  }
+  async getUserCount() { }
 }

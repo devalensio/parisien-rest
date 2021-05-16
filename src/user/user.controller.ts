@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 
 import * as bcrypt from 'bcrypt';
 
@@ -6,12 +6,15 @@ import { UserService } from './user.service';
 
 import { UserDto } from './user.dto';
 
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
 @Controller('users')
 export class UserController {
   constructor(
     private readonly userService: UserService,
   ) { }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getUsers() {
     const users = await this.userService.findAll();

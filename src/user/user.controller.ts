@@ -4,8 +4,7 @@ import * as bcrypt from 'bcrypt';
 
 import { UserService } from './user.service';
 
-import { UserDto } from './dto/user.dto';
-import { UserLoginDto } from './dto/user-login.dto';
+import { UserDto } from './user.dto';
 
 @Controller('users')
 export class UserController {
